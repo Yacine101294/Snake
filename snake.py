@@ -5,6 +5,24 @@ import random
 pygame.init()
 snake_speed = 15
 
+BLANC = (255, 255, 255)
+NOIR = (0, 0, 0)
+GRIS = (200, 200, 200)
+
+#Création d'une classe Button pour faciliter la gestion des boutons
+class Button:
+    def __init__(self, x, y, largeur, hauteur, texte):                    # Méthode d'initialisation avec les paramètres de position (x,y), taille et texte du bouton
+        self.rect = pygame.Rect(x, y, largeur, hauteur)                   # Création d'un rectangle pygame avec les dimensions spécifiées
+        self.texte=texte                                                  # Stockage du texte à afficher sur le bouton
+        self.couleur= BLANC                                               # Définition de la couleur de fond du bouton (blanc par défaut)
+        self.couleur_texte = NOIR                                         # Définition de la couleur du texte (noir par défaut)
+        self.font = pygame.font.Font(None, 36)                            # Création d'une police de caractères de taille 36
+
+    def dessiner(self, surface):
+        #Dessine le rectangle du bouton
+        pygame.draw.rect(surface, self.couleur, self.rect)
+
+
 #Taille de l'écran pour affichage
 fenetre = pygame.display.set_mode((600, 480))
 pygame.display.set_caption("Snake Game")
