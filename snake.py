@@ -18,9 +18,21 @@ class Button:
         self.couleur_texte = NOIR                                         # Définition de la couleur du texte (noir par défaut)
         self.font = pygame.font.Font(None, 36)                            # Création d'une police de caractères de taille 36
 
-    def dessiner(self, surface):
+    def dessiner(self, surface):                                          # Surface est l'objet pygame sur lequel on va dessiner (fenêtre ou autre surface)
         #Dessine le rectangle du bouton
-        pygame.draw.rect(surface, self.couleur, self.rect)
+        pygame.draw.rect(surface, self.couleur, self.rect)                # Dessine le rectangle avec la couleur de fond
+        pygame.draw.rect(surface, NOIR, self.rect, 2)                     # Dessine la bordure noire de 2 pixels
+        
+        #Dessiner le texte
+        texte_surface = self.font.render(self.texte, True, self.couleur_texte)  # Crée une surface avec le texte rendu
+        texte_rect = texte_surface.get_rect(center=self.rect.center)      # Centre le texte dans le rectangle du bouton
+        surface.blit(texte_surface, texte_rect)                       # Affiche le texte sur la surface aux coordonnées calculées
+
+    def est_clique(self, pos):                    # Méthode qui vérifie si un point donné est sur le bouton
+        return self.rect.collidepoint(pos)        # Retourne True si les coordonnées 'pos' sont dans le rectangle du bouton
+
+#Création du bouton (après l'initialisation de Pygame)
+bouton_start = Button (200, 200, 200, 50, "START")
 
 
 #Taille de l'écran pour affichage
@@ -50,9 +62,16 @@ fond = pygame.image.load("C:/Users/yacdu/Desktop/Python/Mes projets/Snake/assets
 fond = pygame.transform.scale(fond, fenetre.get_size())
 
 continuer = True                                         # Variable pour contrôler la boucle principale du jeu
-while continuer:                                        # Boucle principale qui continue tant que continuer est True
-    for event in pygame.event.get():                    # Parcours de tous les événements pygame en attente
-        if event.type == pygame.QUIT:                   # Si l'utilisateur clique sur le bouton de fermeture de la fenêtre
-            continuer = False                           # On met continuer à False pour sortir de la boucle
-        fenetre.blit(fond, (0, 0))                # Rafraîchissement du fond d'écran
-        pygame.display.flip()                           # Mise à jour de l'affichage
+while continuer:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            continuer = False
+        # Gestion du clic sur le bouton
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if bouton_start.est_clique(event.pos):
+                print("Bouton cliqué!")  # Remplace ceci par l'action que tu veux
+                
+    # Affichage
+    fenetre.blit(fond, (0, 0))
+    bouton_start.dessiner(fenetre)  # Dessine le bouton
+    pygame.display.flip()
