@@ -4,4 +4,4 @@ import random
 
 snake_speed = 15
 
-#Taille de l'écran puor affichage
+#Taille de l'écran pour affichage
