@@ -1,0 +1,9 @@
+# Paramètres partagés
+WINDOW_WIDTH = 600
+WINDOW_HEIGHT = 480
+SNAKE_SPEED = 15
+
+# Couleurs
+BLANC = (255, 255, 255)
+NOIR = (0, 0, 0)
+GRIS = (200, 200, 200)

@@ -1,9 +1,11 @@
 import pygame
 import time
 import random
+from settings import *  # Importer les paramètres
+from game import lancer_jeu  # Importer la fonction de jeu
 
 pygame.init()
-snake_speed = 15
+
 
 BLANC = (255, 255, 255)
 NOIR = (0, 0, 0)
@@ -31,16 +33,16 @@ class Button:
     def est_clique(self, pos):                    # Méthode qui vérifie si un point donné est sur le bouton
         return self.rect.collidepoint(pos)        # Retourne True si les coordonnées 'pos' sont dans le rectangle du bouton
 
-#Création du bouton (après l'initialisation de Pygame)
-bouton_start = Button (200, 200, 200, 50, "START")
-
+#Création des boutons
+bouton_start = Button(75, 215, 200, 50, "START")
+bouton_reglages = Button(325, 215, 200, 50, "REGLAGES")
 
 #Taille de l'écran pour affichage
-fenetre = pygame.display.set_mode((600, 480))
+fenetre = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Snake Game")
 
 # Création d'une surface de la même taille que la fenêtre
-background=pygame.Surface(fenetre.get_size())
+background = pygame.Surface(fenetre.get_size())
 # Conversion de la surface pour optimiser l'affichage
 background = background.convert()
 # Remplissage de la surface avec une couleur blanche (RGB: 250, 250, 250)
@@ -57,21 +59,29 @@ background.blit(text, textpos)                           # Affichage du texte su
 fenetre.blit(background, (0, 0))      # Affichage du fond sur la fenêtre aux coordonnées (0,0)
 pygame.display.flip()                  # Mise à jour de l'affichage
 
-#Boucle d'événements
+#Charger l'image de fond
 fond = pygame.image.load("C:/Users/yacdu/Desktop/Python/Mes projets/Snake/assets/asset.1.png").convert()
 fond = pygame.transform.scale(fond, fenetre.get_size())
 
-continuer = True                                         # Variable pour contrôler la boucle principale du jeu
+#Boucle principale
+continuer = True
 while continuer:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             continuer = False
-        # Gestion du clic sur le bouton
+        # Gestion du clic sur les boutons
         if event.type == pygame.MOUSEBUTTONDOWN:
             if bouton_start.est_clique(event.pos):
-                print("Bouton cliqué!")  # Remplace ceci par l'action que tu veux
+                print("Démarrage du jeu...")
+                continuer = lancer_jeu(fenetre)
+            elif bouton_reglages.est_clique(event.pos):
+                print("Réglages cliqués!")
                 
-    # Affichage
+    # Affichage du menu
     fenetre.blit(fond, (0, 0))
     bouton_start.dessiner(fenetre)  # Dessine le bouton
+    bouton_reglages.dessiner(fenetre)
     pygame.display.flip()
+
+# Quitter proprement Pygame
+pygame.quit()
