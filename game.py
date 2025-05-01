@@ -8,6 +8,11 @@ def lancer_jeu(fenetre):
     snake_body = [[100, 50], [90, 50], [80, 50]]
     direction = "RIGHT"
     changer_direction = direction
+    
+    fruit_position = [random.randrange(1, (WINDOW_WIDTH//10))*10,
+                        random.randrange(1, (WINDOW_HEIGHT//10))*10]
+
+    fruit_spawn = True
 
     #Boucle principale du jeu
     jeu_actif = True
@@ -42,7 +47,17 @@ def lancer_jeu(fenetre):
             snake_pos[0] += 10
 
         # Mise à jour du corps du serpent
-        snake_body.insert(0, list(snake_pos))
+        snake_body.insert(0, list(snake_pos))                                         # Ajoute la nouvelle position de la tête au début du corps
+        if snake_pos[0] == fruit_position[0] and snake_pos[1] == fruit_position[1]:   # Vérifie si le serpent mange le fruit
+            SCORE += 10                                                               # Augmente le score
+            fruit_spawn = False                                                       # Indique qu'un nouveau fruit doit apparaître
+        else:
+            snake_body.pop()                                                          # Supprime le dernier segment du corps si pas de fruit mangé
+        
+        if not fruit_spawn:
+            fruit_position = [random.randrange(1, (WINDOW_WIDTH//10)) * 10, 
+                          random.randrange(1, (WINDOW_HEIGHT//10)) * 10]
+            
         snake_body.pop()
 
         # Affichage

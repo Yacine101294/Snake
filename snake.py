@@ -43,8 +43,10 @@ pygame.display.set_caption("Snake Game")
 
 # Création d'une surface de la même taille que la fenêtre
 background = pygame.Surface(fenetre.get_size())
+
 # Conversion de la surface pour optimiser l'affichage
 background = background.convert()
+
 # Remplissage de la surface avec une couleur blanche (RGB: 250, 250, 250)
 background.fill((250, 250, 250))
 

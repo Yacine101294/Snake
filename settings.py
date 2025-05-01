@@ -1,7 +1,8 @@
 # Paramètres partagés
 WINDOW_WIDTH = 600
 WINDOW_HEIGHT = 480
-SNAKE_SPEED = 15
+SNAKE_SPEED = 20
+SCORE = 0
 
 # Couleurs
 BLANC = (255, 255, 255)
