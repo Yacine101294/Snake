@@ -54,11 +54,11 @@ def lancer_jeu(fenetre):
         else:
             snake_body.pop()                                                          # Supprime le dernier segment du corps si pas de fruit mangé
         
-        if not fruit_spawn:
-            fruit_position = [random.randrange(1, (WINDOW_WIDTH//10)) * 10, 
-                          random.randrange(1, (WINDOW_HEIGHT//10)) * 10]
+        if not fruit_spawn:                                                          # Si le fruit a été mangé
+            fruit_position = [random.randrange(1, (WINDOW_WIDTH//10)) * 10,         # Génère une nouvelle position aléatoire pour le fruit
+                          random.randrange(1, (WINDOW_HEIGHT//10)) * 10]            # en respectant la grille de jeu
             
-        snake_body.pop()
+        snake_body.pop()                                                            # Supprime le dernier segment du corps du serpent
 
         # Affichage
         fenetre.fill(NOIR)
