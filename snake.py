@@ -2,7 +2,7 @@ import pygame
 import time
 import random
 from settings import *  # Importer les paramètres
-from game import lancer_jeu  # Importer la fonction de jeu
+from game import lancer_jeu, reglages  # Importer les fonctions du jeu
 
 pygame.init()
 
@@ -39,6 +39,7 @@ bouton_reglages = Button(325, 215, 200, 50, "REGLAGES")
 
 #Taille de l'écran pour affichage
 fenetre = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
 pygame.display.set_caption("Snake Game")
 
 # Création d'une surface de la même taille que la fenêtre
@@ -51,11 +52,11 @@ background = background.convert()
 background.fill((250, 250, 250))
 
 #Afficher du texte
-font = pygame.font.Font(None, 36)                         # Création d'une police de caractères de taille 36
-text = font.render("Bienvenu dans le jeu Snake", 1, (10, 10, 10))  # Création du texte avec la police choisie, en noir (RGB: 10, 10, 10)
-textpos = text.get_rect()                                # Récupération de la position du texte
-textpos.centerx= background.get_rect().centerx           # Centrage horizontal du texte sur le fond
-background.blit(text, textpos)                           # Affichage du texte sur le fond aux coordonnées définies
+font = pygame.font.Font(None, 36)                                   # Création d'une police de caractères de taille 36
+text = font.render("Bienvenu dans le jeu Snake", 1, (10, 10, 10))   # Création du texte avec la police choisie, en noir (RGB: 10, 10, 10)
+textpos = text.get_rect()                                           # Récupération de la position du texte
+textpos.centerx= background.get_rect().centerx                      # Centrage horizontal du texte sur le fond
+background.blit(text, textpos)                                      # Affichage du texte sur le fond aux coordonnées définies
 
 #Afficher tout à l'écran
 fenetre.blit(background, (0, 0))      # Affichage du fond sur la fenêtre aux coordonnées (0,0)
@@ -76,13 +77,32 @@ while continuer:
             if bouton_start.est_clique(event.pos):
                 print("Démarrage du jeu...")
                 continuer = lancer_jeu(fenetre)
+                if continuer == "REGLAGES":
+                    # Si le joueur a cliqué sur "Réglages" après la fin de partie
+                    continuer = reglages(fenetre)
+                elif continuer == "REJOUER":
+                    # Si le joueur a cliqué sur "Rejouer" après la fin de partie
+                    continuer = lancer_jeu(fenetre)
+                elif continuer == "MENU" or continuer == True:
+                    # Retour au menu principal
+                    continuer = True
+                else:
+                    # Quitter le jeu
+                    continuer = False
             elif bouton_reglages.est_clique(event.pos):
-                print("Réglages cliqués!")
+                print("Accès aux réglages...")
+                continuer = reglages(fenetre)
                 
     # Affichage du menu
     fenetre.blit(fond, (0, 0))
     bouton_start.dessiner(fenetre)  # Dessine le bouton
     bouton_reglages.dessiner(fenetre)
+    
+    # Afficher le record actuel dans le menu principal
+    record_text = pygame.font.SysFont(None, 42).render(f"Record: {HIGH_SCORE}", True, BLANC)
+    record_rect = record_text.get_rect(center=(WINDOW_WIDTH // 2, 150))
+    fenetre.blit(record_text, record_rect)
+    
     pygame.display.flip()
 
 # Quitter proprement Pygame
