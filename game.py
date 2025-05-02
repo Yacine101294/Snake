@@ -269,6 +269,9 @@ def reglages(fenetre):
             option_selectionnee = i
             break
     
+    # Pour stocker les rectangles des options (pour la détection des clics)
+    option_rects = []
+    
     while reglages_actif:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -285,6 +288,14 @@ def reglages(fenetre):
                 if event.key == pygame.K_RETURN:
                     SNAKE_SPEED = options_vitesse[option_selectionnee]["valeur"]
                     reglages_actif = False  # Sortir des réglages
+            
+            # Gestion des clics de souris
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                for i, rect in enumerate(option_rects):
+                    if rect.collidepoint(event.pos):
+                        option_selectionnee = i
+                        SNAKE_SPEED = options_vitesse[i]["valeur"]
+                        reglages_actif = False  # Sortir des réglages
         
         # Affichage
         fenetre.fill(NOIR)
@@ -296,8 +307,11 @@ def reglages(fenetre):
         
         # Instructions
         font_instructions = pygame.font.SysFont(None, 24)
-        instructions_text = font_instructions.render("Utilisez les flèches haut/bas pour sélectionner et Entrée pour valider", True, GRIS)
+        instructions_text = font_instructions.render("Utilisez les flèches haut/bas pour sélectionner, Entrée pour valider ou cliquez directement", True, GRIS)
         fenetre.blit(instructions_text, (WINDOW_WIDTH // 2 - instructions_text.get_width() // 2, 100))
+        
+        # Réinitialiser la liste des rectangles
+        option_rects = []
         
         # Options de vitesse
         font_option = pygame.font.SysFont(None, 36)
@@ -307,7 +321,19 @@ def reglages(fenetre):
             texte = f"> {option['texte']} <" if i == option_selectionnee else option['texte']
             
             option_text = font_option.render(texte, True, couleur)
-            fenetre.blit(option_text, (WINDOW_WIDTH // 2 - option_text.get_width() // 2, 180 + i * 50))
+            text_pos = (WINDOW_WIDTH // 2 - option_text.get_width() // 2, 180 + i * 50)
+            fenetre.blit(option_text, text_pos)
+            
+            # Stocker le rectangle pour la détection des clics
+            rect = option_text.get_rect()
+            rect.topleft = text_pos
+            option_rects.append(rect)
+            
+            # Dessiner un rectangle invisible autour de l'option pour élargir la zone cliquable
+            zone_cliquable = pygame.Rect(rect.left - 20, rect.top - 5, rect.width + 40, rect.height + 10)
+            # Dessiner un contour pour visualiser la zone cliquable (optionnel, à commenter en production)
+            # pygame.draw.rect(fenetre, GRIS, zone_cliquable, 1)
+            option_rects[i] = zone_cliquable
         
         pygame.display.flip()
         pygame.time.Clock().tick(30)
