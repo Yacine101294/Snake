@@ -1,6 +1,4 @@
 import pygame
-import time
-import random
 from settings import *  # Importer les paramètres
 from game import lancer_jeu, reglages  # Importer les fonctions du jeu
 
@@ -98,10 +96,7 @@ while continuer:
     bouton_start.dessiner(fenetre)  # Dessine le bouton
     bouton_reglages.dessiner(fenetre)
     
-    # Afficher le record actuel dans le menu principal
-    record_text = pygame.font.SysFont(None, 42).render(f"Record: {HIGH_SCORE}", True, BLANC)
-    record_rect = record_text.get_rect(center=(WINDOW_WIDTH // 2, 150))
-    fenetre.blit(record_text, record_rect)
+    
     
     pygame.display.flip()
 
